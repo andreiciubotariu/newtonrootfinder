@@ -56,7 +56,8 @@ public class Const extends Function {
 		if (absValue == Math.E)
 			return "e";
 		else if (absValue == Math.PI)
-			return "π";
+			return "pi";
+			//return "π";
 
 		NumberFormat nf = new DecimalFormat("##.###");
 		String formatted = nf.format(absValue);

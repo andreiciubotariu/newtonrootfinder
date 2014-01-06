@@ -145,10 +145,10 @@ public class JAppletRunner extends JApplet {
 			zoomInputs[x] = new JTextField(3);
 			zoomControls.add(zoomInputs[x]);
 			graphViewer.setZoomInput(zoomInputs[x], x);
-			graphViewer.setXMin(-1);
-			graphViewer.setXMax(1);
-			graphViewer.setYMin(-1);
-			graphViewer.setYMax(1);
+			graphViewer.setXMin(-10);
+			graphViewer.setXMax(10);
+			graphViewer.setYMin(-10);
+			graphViewer.setYMax(10);
 		}
 		JButton setZoomButton = new JButton("Set window");
 		setZoomButton.addActionListener(new ActionListener() {

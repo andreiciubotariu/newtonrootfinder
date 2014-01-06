@@ -58,7 +58,7 @@ public class Controls {
 						double d = Double.parseDouble(newValue);
 						funct.setValue(d);
 					} catch (NumberFormatException e) {
-						System.out.println("nope");
+						
 					}
 					printFunction();
 					return;
@@ -271,7 +271,7 @@ public class Controls {
 
 		JPanel modifiers = new JPanel(new java.awt.GridLayout(0, 2, 2, 2));
 		modifiers.setBackground(Color.WHITE);
-		b = new JButton("⇨ )");
+		b = new JButton(")");
 		b.addActionListener(new ActionListener() {
 
 			@Override

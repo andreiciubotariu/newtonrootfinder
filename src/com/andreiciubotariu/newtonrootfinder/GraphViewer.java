@@ -75,7 +75,7 @@ public class GraphViewer extends JPanel {
 				if (counter == iterations - 1 || eqn.computeFor(newX) == 0
 						|| Math.abs(currentX - newX) < 0.0001
 						|| eqn.computeFor(currentX) == eqn.computeFor(newX)) {
-					System.out.println("Root at " + nf.format(newX));
+					//System.out.println("Root at " + nf.format(newX));
 					root = newX;
 					break;
 				}
@@ -135,7 +135,6 @@ public class GraphViewer extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				System.out.println("mousePressed");
 				if (SwingUtilities.isLeftMouseButton(e)) {
 					leftButtonCoords[0] = e.getX();
 					leftButtonCoords[1] = e.getY();
@@ -149,7 +148,6 @@ public class GraphViewer extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if (SwingUtilities.isLeftMouseButton(e)) {
-					System.out.println("mouseReleased");
 					initialStart = toRegX(leftButtonCoords[0]);
 					repaint();
 				} else {
