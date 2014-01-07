@@ -26,7 +26,7 @@ public class Ln extends Function {
 		List<FunctionComponent> deriv = new ArrayList<FunctionComponent>();
 		deriv.add(getArgument().computeFirstDerivative());
 		deriv.add(Sign.MULT);
-		deriv.add(new Power(getArgument(), -1));
+		deriv.add(new Power(getArgument(), new Const(-1)));
 		return new Function(deriv);
 	}
 

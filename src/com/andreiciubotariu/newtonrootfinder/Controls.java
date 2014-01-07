@@ -47,10 +47,12 @@ public class Controls {
 			if (getCurrent().hasComponents()) {
 				FunctionComponent f = getCurrent().lastComponent();
 				if (f instanceof Power) {
-					((Power) f).setDegree(newConst.getValue());
-					printFunction();
-					return;
-				} else if (f instanceof Const) {
+					f = ((Power) f).getDegree();
+					//((Power) f).setDegree(newConst.getValue());
+					//printFunction();
+					//return;
+				} 
+				/*else*/ if (f instanceof Const) {
 					Const funct = (Const) f;
 					String value = funct.displayString();
 					String newValue = value += newConst.displayString();
@@ -208,15 +210,10 @@ public class Controls {
 				if (!getCurrent().hasComponents() || !getCurrent().isComplete()) {
 					return;
 				}
-				Function f = (Function) getCurrent().lastComponent(); // disable
-																		// if
-																		// Sign
-																		// is
-																		// last
-																		// component
+				Function f = (Function) getCurrent().lastComponent(); 
 				if (!(f instanceof Const)) {
 					getCurrent().deleteLastComponent();
-					Function power = new Power(f, 0);
+					Function power = new Power(f, new Const(0));
 					getCurrent().addComponent(power);
 				} else {
 					getCurrent().deleteLastComponent();
@@ -256,6 +253,9 @@ public class Controls {
 			public void action(ActionEvent ae) {
 				if (getCurrent().hasComponents()) {
 					FunctionComponent f = getCurrent().lastComponent();
+					if (f instanceof Power){
+						f = ((Power)f).getDegree();
+					}
 					if (f instanceof Const) {
 						Const funct = (Const) f;
 						funct.setHasDecimal(true);

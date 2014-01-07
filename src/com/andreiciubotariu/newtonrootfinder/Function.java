@@ -58,7 +58,7 @@ public class Function implements FunctionComponent {
 					temp.add(f);
 					break;
 				case DIV:
-					temp.add(new Power(f, -1));
+					temp.add(new Power(f, new Const(-1)));
 					break;
 				}
 			}
@@ -137,7 +137,7 @@ public class Function implements FunctionComponent {
 					temp.add(f);
 					break;
 				case DIV:
-					temp.add(new Power(f, -1));
+					temp.add(new Power(f, new Const(-1)));
 					break;
 				}
 			}

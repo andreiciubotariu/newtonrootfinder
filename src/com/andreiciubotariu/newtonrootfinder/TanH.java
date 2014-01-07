@@ -23,7 +23,7 @@ public class TanH extends Function {
 		List<FunctionComponent> deriv = new ArrayList<FunctionComponent>();
 		deriv.add(getArgument().computeFirstDerivative());
 		deriv.add(Sign.MULT);
-		deriv.add(new Power(new SecH(getArgument()), 2));
+		deriv.add(new Power(new SecH(getArgument()), new Const(2)));
 		return new Function(deriv);
 	}
 

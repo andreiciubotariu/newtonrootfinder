@@ -182,7 +182,7 @@ public class JAppletRunner extends JApplet {
 		graphViewer = new GraphViewer();
 		graphViewer.setBackground(Color.WHITE);
 		Function quadratic = new Function(new ArrayList<FunctionComponent>());
-		quadratic.addComponent(new Power(new X(), 2));
+		quadratic.addComponent(new Power(new X(), new Const(2)));
 		quadratic.addComponent(Sign.PLUS);
 
 		quadratic.addComponent(new Const(2));

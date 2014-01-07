@@ -7,9 +7,9 @@ import java.util.ArrayList;
  * @author Andrei Ciubotariu
  */
 public class Power extends Function {
-	private double mDeg;
+	private Const mDeg;
 
-	public Power(Function function, double deg) {
+	public Power(Function function, Const deg) {
 		setArgument(function);
 		mDeg = deg;
 	}
@@ -17,9 +17,9 @@ public class Power extends Function {
 	@Override
 	public Function computeFirstDerivative() {
 		List<FunctionComponent> deriv = new ArrayList<FunctionComponent>();
-		deriv.add(new Const(mDeg));
+		deriv.add(new Const(mDeg.getValue()));
 		deriv.add(Sign.MULT);
-		deriv.add(new Power(getArgument(), mDeg - 1));
+		deriv.add(new Power(getArgument(), new Const(mDeg.getValue() - 1)));
 		deriv.add(Sign.MULT);
 		deriv.add(getArgument().computeFirstDerivative());
 		return new Function(deriv);
@@ -32,15 +32,23 @@ public class Power extends Function {
 
 	@Override
 	public Function sameType() {
-		return new Power(new Function(new ArrayList<FunctionComponent>()), 0);
+		return new Power(new Function(new ArrayList<FunctionComponent>()), new Const(0));
 	}
 
-	public void setDegree(double deg) {
-		mDeg = deg;
+	public void setDegreeValue(double deg) {
+		mDeg.setValue(deg);
+	}
+	
+	public double getDegreeValue(){
+		return mDeg.getValue();
+	}
+	
+	public Const getDegree(){
+		return mDeg;
 	}
 
 	@Override
 	public double computeFor(double value) {
-		return Math.pow(getArgument().computeFor(value), mDeg);
+		return Math.pow(getArgument().computeFor(value), mDeg.getValue());
 	}
 }
