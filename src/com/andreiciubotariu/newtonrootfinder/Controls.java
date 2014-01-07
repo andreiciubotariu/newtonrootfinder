@@ -299,6 +299,9 @@ public class Controls {
 						f.deleteLastComponent();
 					}
 				}
+				if (mainFunct.empty()){
+					functListener.onFunctionSet(mainFunct);
+				}
 				printFunction();
 			}
 		});
@@ -310,12 +313,14 @@ public class Controls {
 
 			@Override
 			public void action(ActionEvent ae) {
-				currentFunction.get(0).removeAllComponents();
+				mainFunct.removeAllComponents();
 
 				for (int x = currentFunction.size() - 1; x >= 1; x--) {
 					currentFunction.remove(x);
 				}
-
+				if (mainFunct.empty()){
+					functListener.onFunctionSet(mainFunct);
+				}
 				printFunction();
 			}
 		});
@@ -331,6 +336,9 @@ public class Controls {
 				if (getCurrent().hasComponents() && getCurrent().isComplete()) {
 					functListener.onFunctionSet(mainFunct);
 					controlListener.showGraph();
+				}
+				if (mainFunct.empty()){
+					functListener.onFunctionSet(mainFunct);
 				}
 			}
 		});

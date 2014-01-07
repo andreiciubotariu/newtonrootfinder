@@ -312,11 +312,11 @@ public class GraphViewer extends JPanel {
 		double prevY = eqn.computeFor(prevX);
 		for (double x = Math.floor(xMin + step); x <= xMax; x += step) {
 			double currentY = (eqn.computeFor(x));
-			// if ((!Double.isInfinite(prevY) && !Double.isNaN(prevY)) &&
-			// (!Double.isInfinite(currentY) && !Double.isNaN(currentY))){
+			if ((!Double.isInfinite(prevY) && !Double.isNaN(prevY)) &&
+			(!Double.isInfinite(currentY) && !Double.isNaN(currentY))){
 			g.drawLine((int) toPanelX(prevX), (int) toPanelY(prevY),
 					(int) toPanelX(x), (int) toPanelY(currentY));
-			// }
+			}
 			prevX = x;
 			prevY = currentY;
 		}

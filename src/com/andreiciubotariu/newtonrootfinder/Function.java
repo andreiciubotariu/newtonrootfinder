@@ -195,6 +195,10 @@ public class Function implements FunctionComponent {
 
 		return mFunctionTerms.get(0) instanceof Function;
 	}
+	
+	public boolean empty(){
+		return mFunctionTerms.size() == 0;
+	}
 
 	public FunctionComponent lastComponent() {
 		return mFunctionTerms.get(mFunctionTerms.size() - 1);
