@@ -2,6 +2,8 @@ package com.andreiciubotariu.newtonrootfinder;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -37,7 +39,10 @@ public class GraphViewer extends JPanel {
 	private int iterations = 0;
 	private JTextField startField;
 	private JTextField iterationsField;
-	private NumberFormat nf = new DecimalFormat("##.###");
+	private NumberFormat nf = new DecimalFormat("##.####");
+	private Color darkGreen = new Color(0x237D00);
+	
+	private Object lock = new Object();
 
 	// [xMin,xMax,yMin,yMax]
 	private JTextField[] minMaxTextFields = new JTextField[4];
@@ -69,8 +74,10 @@ public class GraphViewer extends JPanel {
 				newX = currentX
 						- (eqn.computeFor(currentX) / deriv
 								.computeFor(currentX));
+				synchronized (lock){
 				tangentPoints.add(new Point2D.Double(currentX, eqn
 						.computeFor(currentX)));
+				}
 				// drawTangent (g,currentX, eqn.computeFor (currentX));
 				if (counter == iterations - 1 || eqn.computeFor(newX) == 0
 						|| Math.abs(currentX - newX) < 0.0001
@@ -123,7 +130,7 @@ public class GraphViewer extends JPanel {
 					setXMin(xMin - deltaX);
 					setXMax(xMax - deltaX);
 					setYMin(yMin + deltaY);
-					setYMax(yMin + deltaY);
+					setYMax(yMax + deltaY);
 
 					rightButtonCoords[0] = e.getX();
 					rightButtonCoords[1] = e.getY();
@@ -155,6 +162,48 @@ public class GraphViewer extends JPanel {
 					rightButtonCoords[1] = -1;
 				}
 			}
+			
+			@Override
+			public void mouseClicked (MouseEvent e){
+				requestFocusInWindow();
+			}
+		});
+		
+		setFocusable(true);
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed (KeyEvent e){
+				double dx = (xMax-xMin)/10;
+				double dy = (yMax-yMin)/10;
+				
+				switch (e.getKeyCode()){
+				case KeyEvent.VK_UP:
+				case KeyEvent.VK_KP_UP:
+				case KeyEvent.VK_W:
+						setYMin(yMin + dy);
+						setYMax(yMax + dy);
+						break;
+				case KeyEvent.VK_DOWN:
+				case KeyEvent.VK_KP_DOWN:
+				case KeyEvent.VK_S:		
+					setYMin(yMin - dy);
+					setYMax(yMax - dy);
+						break;
+				case KeyEvent.VK_RIGHT:
+				case KeyEvent.VK_KP_RIGHT:
+				case KeyEvent.VK_D:		
+					setXMin(xMin + dx);
+					setXMax(xMax + dx);
+						break;
+				case KeyEvent.VK_LEFT:
+				case KeyEvent.VK_KP_LEFT:
+				case KeyEvent.VK_A:		
+					setXMin(xMin - dx);
+					setXMax(xMax - dx);
+						break;
+				}
+				repaint();
+			}
 		});
 	}
 
@@ -163,7 +212,9 @@ public class GraphViewer extends JPanel {
 	}
 
 	public void setFunction(Function e) {
+		synchronized (lock){
 		tangentPoints.clear();
+		}
 		if (e.isComplete()) {
 			eqn = e;
 			// System.out.println (eqn.toString());
@@ -174,6 +225,22 @@ public class GraphViewer extends JPanel {
 		}
 		repaint();
 	}
+	
+	public double getXMin(){
+	return xMin;
+	}
+	
+	public double getXMax(){
+		return xMax;
+		}
+	
+	public double getYMin(){
+		return yMin;
+		}
+	
+	public double getYMax(){
+		return yMax;
+		}
 
 	public void setXMin(double xMin) {
 		if (xMin < xMax) {
@@ -216,7 +283,9 @@ public class GraphViewer extends JPanel {
 	}
 
 	public void findRoot() {
+		synchronized(lock){
 		tangentPoints.clear();
+		}
 		if (rootFinderWorker == null || rootFinderWorker.isCancelled()
 				|| rootFinderWorker.isDone()) {
 			rootFinderWorker = new RootFinder();
@@ -230,10 +299,17 @@ public class GraphViewer extends JPanel {
 		}
 	}
 
+	public double getInitialStart(){
+		return initialStart;
+	}
 	public void setInitialStart(double start) {
 		initialStart = start;
+		startField.setText(String.valueOf(initialStart));
 	}
 
+	public int getIterations(){
+		return iterations;
+	}
 	public void setIterations(int iterations) {
 		if (iterations < 50) {
 			this.iterations = iterations;
@@ -278,7 +354,7 @@ public class GraphViewer extends JPanel {
 		drawFunction(g);
 		g.setColor(Color.BLUE);
 		computeTangents(g);
-		g.setColor(Color.GREEN);
+		g.setColor(darkGreen);
 		g.drawString(nf.format(toRegX(leftButtonCoords[0])),
 				leftButtonCoords[0], leftButtonCoords[1]);
 		g.setColor(Color.RED);
@@ -323,8 +399,10 @@ public class GraphViewer extends JPanel {
 	}
 
 	private void computeTangents(final Graphics g) {
+		synchronized(lock){
 		for (Point2D.Double p : tangentPoints) {
 			drawTangent(g, p.x, p.y);
+		}
 		}
 
 	}

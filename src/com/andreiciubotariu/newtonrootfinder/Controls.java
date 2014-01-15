@@ -1,11 +1,21 @@
 package com.andreiciubotariu.newtonrootfinder;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.border.*;
-import java.util.*;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
 /**
  * @author Andrei Ciubotariu
@@ -28,7 +38,7 @@ public class Controls {
 
 		protected abstract void action(ActionEvent ae);
 	}
-
+	private NumberFormat nf = new DecimalFormat("##.###");
 	private List<Function> currentFunction = new ArrayList<Function>();
 	private final Function mainFunct = new Function(
 			new ArrayList<FunctionComponent>());
@@ -56,9 +66,25 @@ public class Controls {
 					Const funct = (Const) f;
 					String value = funct.displayString();
 					String newValue = value += newConst.displayString();
+					int trailingZeroes = funct.getTrailingZeroes();
+					if (funct.hasDecimal()){
+						System.out.println ("Before: " + trailingZeroes);
+						if (newConst.getValue()==0){
+							trailingZeroes++;
+						}
+						else{
+							trailingZeroes = 0;
+						}
+						System.out.println ("After: " + trailingZeroes);
+					}
 					try {
 						double d = Double.parseDouble(newValue);
+						String converted = nf.format(d);
+						if (!funct.hasDecimal() && converted.charAt(converted.length()-1) != newConst.displayString().charAt(0)){
+							return;
+						}
 						funct.setValue(d);
+						funct.setTrailingZeroes(trailingZeroes);
 					} catch (NumberFormatException e) {
 						
 					}
@@ -165,12 +191,22 @@ public class Controls {
 		parent.setBackground(Color.WHITE);
 		parent.setLayout(new BoxLayout(parent, BoxLayout.Y_AXIS));
 		currentFunctionDisplayLabel.setBackground(Color.WHITE);
+		JLabel currentLevelLabel = new JLabel ("Current Function Level");
+		JPanel currentLevelLabelHolder = new JPanel(new BorderLayout());
+		currentLevelLabelHolder.setBackground(Color.WHITE);
+		currentLevelLabelHolder.add(currentLevelLabel);
+		parent.add(currentLevelLabelHolder);
 		JScrollPane currentFunctionScroller = new JScrollPane(
 				currentFunctionDisplayLabel);
 		currentFunctionScroller.getViewport().setBackground(Color.WHITE);
 		parent.add(currentFunctionScroller);
 		currentFunctionScroller.setPreferredSize(new Dimension(250, 50));
 
+		JLabel prevLevelLabel = new JLabel ("Previous Function Level");
+		JPanel prevLevelLabelHolder = new JPanel(new BorderLayout());
+		prevLevelLabelHolder.setBackground(Color.WHITE);
+		prevLevelLabelHolder.add(prevLevelLabel);
+		parent.add(prevLevelLabelHolder);
 		JScrollPane functionScroller = new JScrollPane(
 				lowerFunctionDisplayLabel);
 		functionScroller.getViewport().setBackground(Color.WHITE);
@@ -272,6 +308,7 @@ public class Controls {
 		JPanel modifiers = new JPanel(new java.awt.GridLayout(0, 2, 2, 2));
 		modifiers.setBackground(Color.WHITE);
 		b = new JButton(")");
+		b.setToolTipText("Go up one function level");
 		b.addActionListener(new ActionListener() {
 
 			@Override

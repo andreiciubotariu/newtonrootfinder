@@ -18,5 +18,6 @@ public class JFrameRunner {
 		f.add(c);
 		f.pack();
 		f.setVisible(true);
+		f.setMinimumSize(new Dimension (600,700));
 	}
 }

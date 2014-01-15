@@ -3,6 +3,7 @@ package com.andreiciubotariu.newtonrootfinder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -69,6 +70,7 @@ public class Content extends JPanel {
 		holder.setBackground(Color.WHITE);
 		holder.setLayout(new BoxLayout(holder, BoxLayout.Y_AXIS));
 		JLabel title = new JLabel("Newton-Raphson Root Finder");
+		title.setFont(new Font(title.getFont().getName(), Font.BOLD, 16));
 		JPanel j = new JPanel();
 		j.setBackground(Color.WHITE);
 		j.add(title);
@@ -95,71 +97,77 @@ public class Content extends JPanel {
 		rootControlPanel.setBackground(Color.WHITE);
 		JLabel roots = new JLabel("Roots:");
 
-		final JTextField startField = new JTextField("");
+		final JTextField startField = new JTextField("0.0");
+
+
 		startField.setPreferredSize(new Dimension(50, 20));
 		rootControlPanel.add(roots);
+
 		rootControlPanel.add(new JLabel("Starting X value"));
 		rootControlPanel.add(startField);
 		graphViewer.setInitialStartField(startField);
 		rootControlPanel.add(new JLabel("Iterations"));
+
 		final JTextField iterationsField = new JTextField("0");
 		iterationsField.setPreferredSize(new Dimension(50, 20));
 		rootControlPanel.add(iterationsField);
 		graphViewer.setIterationsField(iterationsField);
 
-		JButton findRootButton = new JButton("Find a root");
-
-		findRootButton.addActionListener(new ActionListener() {
+		ActionListener rootListener = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				double initialStart = graphViewer.getInitialStart();
 				try {
-					graphViewer.setInitialStart(Double.parseDouble(startField
-							.getText()));
+					initialStart = Double.parseDouble(startField
+							.getText());
 				} catch (NumberFormatException ne) {
 				}
+				graphViewer.setInitialStart(initialStart);
+
+				int iterations = graphViewer.getIterations();
 				try {
-					graphViewer.setIterations(Integer.parseInt(iterationsField
-							.getText()));
+					iterations = Integer.parseInt(iterationsField
+							.getText());
 				} catch (NumberFormatException ne) {
 				}
+				graphViewer.setIterations(iterations);
 				graphViewer.findRoot();
 				graphViewer.repaint();
 			}
-		});
+		};
+
+		startField.addActionListener(rootListener);
+		iterationsField.addActionListener(rootListener);
+
+		JButton findRootButton = new JButton("Find a root");
+		findRootButton.addActionListener(rootListener);
 		rootControlPanel.add(findRootButton);
 		UIUtils.styleRegButton(findRootButton);
 		holder.add(rootControlPanel);
 
 		JPanel zoomControls = new JPanel();
 		zoomControls.setBackground(Color.WHITE);
+
 		final JTextField[] zoomInputs = new JTextField[4];
 		String[] labels = { "xMin", "xMax", "yMin", "yMax" };
 
-		for (int x = 0; x < 4; x++) {
-			JLabel label = new JLabel(labels[x]);
-			zoomControls.add(label);
-
-			zoomInputs[x] = new JTextField(3);
-			zoomControls.add(zoomInputs[x]);
-			graphViewer.setZoomInput(zoomInputs[x], x);
-			graphViewer.setXMin(-10);
-			graphViewer.setXMax(10);
-			graphViewer.setYMin(-10);
-			graphViewer.setYMax(10);
-		}
-		JButton setZoomButton = new JButton("Set window");
-		setZoomButton.addActionListener(new ActionListener() {
+		ActionListener windowControlListener = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				double[] controls = { -5, 5, -5, 5 };
+				double[] controls = { 
+						graphViewer.getXMin(),
+						graphViewer.getXMax(), 
+						graphViewer.getYMin(),
+						graphViewer.getYMax() 
+				};
 				for (int x = 0; x < 4; x++) {
 					try {
 						controls[x] = Double.parseDouble(zoomInputs[x]
 								.getText());
 					} catch (NumberFormatException ne) {
-						ne.printStackTrace();
+						// ne.printStackTrace();
 					}
 				}
 				graphViewer.setXMin(controls[0]);
@@ -168,9 +176,40 @@ public class Content extends JPanel {
 				graphViewer.setYMax(controls[3]);
 				graphViewer.repaint();
 			}
-		});
+		};
+
+		for (int x = 0; x < 4; x++) {
+			JLabel label = new JLabel(labels[x]);
+			zoomControls.add(label);
+
+			zoomInputs[x] = new JTextField(3);
+			zoomControls.add(zoomInputs[x]);
+			zoomInputs[x].addActionListener(windowControlListener);
+			graphViewer.setZoomInput(zoomInputs[x], x);
+		}	
+		graphViewer.setXMin(-10);
+		graphViewer.setXMax(10);
+		graphViewer.setYMin(-10);
+		graphViewer.setYMax(10);
+		JButton setZoomButton = new JButton("Set window");
+		setZoomButton.addActionListener(windowControlListener);
 		zoomControls.add(setZoomButton);
 		UIUtils.styleRegButton(setZoomButton);
+		JButton resetWindowButton = new JButton("Reset window");
+		resetWindowButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				graphViewer.setXMin(-10);
+				graphViewer.setXMax(10);
+				graphViewer.setYMin(-10);
+				graphViewer.setYMax(10);
+				graphViewer.repaint();
+			}
+
+		});
+		zoomControls.add(resetWindowButton);
+		UIUtils.styleRegButton(resetWindowButton);
 		holder.add(zoomControls);
 
 		this.add(holder, BorderLayout.PAGE_START);
