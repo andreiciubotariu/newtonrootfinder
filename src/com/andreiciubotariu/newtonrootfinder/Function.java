@@ -209,6 +209,9 @@ public class Function implements FunctionComponent {
 	}
 
 	public Function getArgument() {
-		return (Function) mFunctionTerms.get(0);
+		if (mFunctionTerms.size() > 0){
+			return (Function) mFunctionTerms.get(0);
+		}
+		return this;
 	}
 }
