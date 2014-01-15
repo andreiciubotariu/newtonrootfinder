@@ -1,1 +1,47 @@
-<applet code="com.andreiciubotariu.newtonrootfinder.JAppletRunner" archive="bin/newtonrootfinder.jar" width="550" height="700"/>
+<html><head>
+<title>Computational Root Determination</title>
+ <script type="text/javascript"
+     src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+<style type="text/css"></style>
+</head>
+<body>
+<h1>Computational root determination</h1>
+<br>
+
+<applet code="com.andreiciubotariu.newtonrootfinder.JAppletRunner" archive="bin/andreiciubotariu_newtonrootfinder.jar" width="550" height="700"/>
+</applet>
+<p>
+Not loading? Try <a href="bin/andreiciubotariu_newtonrootfinder.jar">downloading the jar file to your computer</a> and launching it as a normal application.
+</p>
+<br>
+<h2>Purpose</h2>
+<p>
+Finding the roots of small, simple functions is just that - simple. For example, with \(f(x)=x^2-1\), you can either solve for \(x\) using a difference of squares or as a shortcut, factor, yielding \(x=\pm 1\) as the \(x\)-coordinates of the roots.
+</p>
+<p>
+However, if we are faced with \(f(x)=cos(x)-x\), finding the root becomes considerably harder. To get an approximation of the roots, we can use computational approximation.
+</p>
+<p>
+One way to do this is using the <a href="http://en.wikipedia.org/wiki/Newton's_method">the Newton-Raphson method.</a> This method is an application of linear approximation. We start with an initial \(x\) value, \(x_1\), and determine the \(x\)-coordinate where the tangent at \(x_1\) intersects the \(x\)-axis. This new \(x\) value becomes \(x_2\). We can write the approximation for the next \(x\) value as 
+$$x_{n+1}=x_n-\frac{f(x_n)}{f^\prime(x_n)}$$
+</p>
+<p>
+This process can repeated until the result is close enough (or actually is), the root, \(r\) of \(f(x)\). This means that 
+$$\lim_{n \to \infty}x= r$$.
+</p>
+
+<h2>How to use the program</h2>
+<p>
+Use the buttons to input the function. If you click on a function, such as \(sin()\), your input will automatically be used as the argument for that function. To go back (to your previous <i>function level</i>), use the close paranthesis <span><b> ) </b> button.
+For functions such as \(-cos(x)\), click <kbd>1</kbd>,<kbd>(-)</kbd>,<kbd>*</kbd>, <kbd>cos</kbd>,<kbd>x</kbd>.
+</p>
+<p>
+When you are ready to graph the function, click <b>Update</b>.
+Choose your starting \(x\) value (\(x_1\)) by left-clicking on the graph or by using the text box. Make sure to make \(x_1\) as close to the root as possible. Then set the number of iterations. The number of iterations serves both as a sensitivity setting and also as a way to ensure that the root-finding process stops at some point. A maximum of 99 iterations is allowed. Click <b>Find root</b> to start the process. The result will be shown in the bottom left corner.
+</p>
+<p>
+<b>Note: The Newton-Raphson method does not apply to functions without roots. An "incorrect" result will be given</b> 
+</p>
+
+</body></html>

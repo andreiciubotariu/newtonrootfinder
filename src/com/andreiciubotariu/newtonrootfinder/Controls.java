@@ -398,7 +398,9 @@ public class Controls {
 		functions.add(makeFunctionButton(new CosH()));
 		functions.add(makeFunctionButton(new TanH()));
 		functions.add(makeFunctionButton(new Ln()));
-		functions.add(makeFunctionButton(new EnclosingFunction()));
+		JButton enclosingFunction = makeFunctionButton(new EnclosingFunction());
+		enclosingFunction.setToolTipText("Use this for functions of the form (x+c)^d");
+		functions.add(enclosingFunction);
 		parent.add(functions);
 
 		return parent;

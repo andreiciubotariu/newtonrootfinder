@@ -311,10 +311,10 @@ public class GraphViewer extends JPanel {
 		return iterations;
 	}
 	public void setIterations(int iterations) {
-		if (iterations < 50) {
+		if (iterations < 100) {
 			this.iterations = iterations;
 		}
-		iterationsField.setText(String.valueOf(iterations));
+		iterationsField.setText(String.valueOf(this.iterations));
 		root = Double.NaN;
 	}
 
