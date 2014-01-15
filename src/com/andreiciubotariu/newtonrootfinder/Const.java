@@ -89,11 +89,11 @@ public class Const extends Function {
 		if (mHasDecimal){
 			int availableDigits = 3-(formatted.length()-(formatted.indexOf(".")+1));
 			for (int x = 0; x< trailingZeroes && x<availableDigits;x++){
-				System.out.println ("Wrote a zero");
+				//System.out.println ("Wrote a zero");
 				formatted+="0";
 			}
 		}
-		System.out.println ("Actual value: " + Double.parseDouble(formatted));
+		//System.out.println ("Actual value: " + Double.parseDouble(formatted));
 		return formatted;
 	}
 

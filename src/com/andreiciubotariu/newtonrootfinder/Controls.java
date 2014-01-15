@@ -68,14 +68,14 @@ public class Controls {
 					String newValue = value += newConst.displayString();
 					int trailingZeroes = funct.getTrailingZeroes();
 					if (funct.hasDecimal()){
-						System.out.println ("Before: " + trailingZeroes);
+						//System.out.println ("Before: " + trailingZeroes);
 						if (newConst.getValue()==0){
 							trailingZeroes++;
 						}
 						else{
 							trailingZeroes = 0;
 						}
-						System.out.println ("After: " + trailingZeroes);
+						//System.out.println ("After: " + trailingZeroes);
 					}
 					try {
 						double d = Double.parseDouble(newValue);

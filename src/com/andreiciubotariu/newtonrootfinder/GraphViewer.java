@@ -80,7 +80,7 @@ public class GraphViewer extends JPanel {
 				}
 				// drawTangent (g,currentX, eqn.computeFor (currentX));
 				if (counter == iterations - 1 || eqn.computeFor(newX) == 0
-						|| Math.abs(currentX - newX) < 0.0001
+						|| Math.abs(currentX - newX) < 0.00001
 						|| eqn.computeFor(currentX) == eqn.computeFor(newX)) {
 					//System.out.println("Root at " + nf.format(newX));
 					root = newX;
