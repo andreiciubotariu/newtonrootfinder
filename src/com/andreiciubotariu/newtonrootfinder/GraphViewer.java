@@ -23,9 +23,7 @@ import javax.swing.SwingWorker;
  * @author Andrei Ciubotariu
  */
 public class GraphViewer extends JPanel {
-	/**
-	 * 
-	 */
+	public static final int MAX_ITERATIONS = 99;
 	private static final long serialVersionUID = 7018285951172715167L;
 	private double xMin = -10, xMax = 10, yMin = -10, yMax = 10;
 	private Function eqn;
@@ -311,7 +309,7 @@ public class GraphViewer extends JPanel {
 		return iterations;
 	}
 	public void setIterations(int iterations) {
-		if (iterations < 100) {
+		if (iterations <= MAX_ITERATIONS) {
 			this.iterations = iterations;
 		}
 		iterationsField.setText(String.valueOf(this.iterations));

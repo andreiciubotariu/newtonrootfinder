@@ -106,7 +106,9 @@ public class Content extends JPanel {
 		rootControlPanel.add(new JLabel("Starting X value"));
 		rootControlPanel.add(startField);
 		graphViewer.setInitialStartField(startField);
-		rootControlPanel.add(new JLabel("Iterations"));
+		JLabel iterationsLabel =new JLabel("Iterations");
+		iterationsLabel.setToolTipText("Max " + GraphViewer.MAX_ITERATIONS + " iterations");
+		rootControlPanel.add(iterationsLabel);
 
 		final JTextField iterationsField = new JTextField("0");
 		iterationsField.setPreferredSize(new Dimension(50, 20));
